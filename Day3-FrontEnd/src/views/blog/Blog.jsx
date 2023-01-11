@@ -15,7 +15,7 @@ const Blog = (props) => {
     const { id } = params;
     setLoading(true);
 
-    fetch(`http://localhost:5000/blogPosts/${id}`)
+    fetch(`http://localhost:3001/blogPosts/${id}`)
       .then((response) => response.json())
       .then((data) => {
         if (data) {
