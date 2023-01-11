@@ -3,27 +3,36 @@ import { Container, Image } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import BlogAuthor from "../../components/blog/blog-author/BlogAuthor";
 import BlogLike from "../../components/likes/BlogLike";
-import posts from "../../data/posts.json";
 import "./styles.css";
+
 const Blog = (props) => {
   const [blog, setBlog] = useState({});
   const [loading, setLoading] = useState(true);
   const params = useParams();
   const navigate = useNavigate();
+
   useEffect(() => {
     const { id } = params;
-    const blog = posts.find((post) => post._id.toString() === id);
+    setLoading(true);
 
-    if (blog) {
-      setBlog(blog);
-      setLoading(false);
-    } else {
-      navigate("/404");
-    }
-  }, []);
+    fetch(`http://localhost:5000/blogPosts/${id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data) {
+          setBlog(data);
+          setLoading(false);
+        } else {
+          navigate("/404");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        navigate("/404");
+      });
+  }, [params, navigate]);
 
   if (loading) {
-    return <div>loading</div>;
+    return <div>Loading...</div>;
   } else {
     return (
       <div className="blog-details-root">
@@ -40,7 +49,7 @@ const Blog = (props) => {
               <div>{`${blog.readTime.value} ${blog.readTime.unit} read`}</div>
               <div
                 style={{
-                  marginTop: 20,
+                  marginTop: 20
                 }}
               >
                 <BlogLike defaultLikes={["123"]} onChange={console.log} />
@@ -50,7 +59,7 @@ const Blog = (props) => {
 
           <div
             dangerouslySetInnerHTML={{
-              __html: blog.content,
+              __html: blog.content
             }}
           ></div>
         </Container>

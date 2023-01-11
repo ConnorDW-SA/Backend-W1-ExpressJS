@@ -9,21 +9,42 @@ const NewBlogPost = (props) => {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
-  const [html, setHTML] = useState(null);
-  useEffect(() => {
-    let html = convertToHTML(editorState.getCurrentContent());
-    setHTML(html);
-  }, [editorState]);
+  const [title, setTitle] = useState("");
+  const [category, setCategory] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let content = convertToHTML(editorState.getCurrentContent());
+
+    fetch("http://localhost:3001/blogPosts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title, category, content })
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => console.log(error));
+  };
   return (
     <Container className="new-blog-container">
-      <Form className="mt-5">
+      <Form className="mt-5" onSubmit={handleSubmit}>
         <Form.Group controlId="blog-form" className="mt-3">
           <Form.Label>Title</Form.Label>
-          <Form.Control size="lg" placeholder="Title" />
+          <Form.Control
+            size="lg"
+            placeholder="Title"
+            onChange={(e) => setTitle(e.target.value)}
+          />
         </Form.Group>
         <Form.Group controlId="blog-category" className="mt-3">
           <Form.Label>Category</Form.Label>
-          <Form.Control size="lg" as="select">
+          <Form.Control
+            size="lg"
+            as="select"
+            onChange={(e) => setCategory(e.target.value)}
+          >
             <option>Category1</option>
             <option>Category2</option>
             <option>Category3</option>
@@ -50,7 +71,7 @@ const NewBlogPost = (props) => {
             size="lg"
             variant="dark"
             style={{
-              marginLeft: "1em",
+              marginLeft: "1em"
             }}
           >
             Submit

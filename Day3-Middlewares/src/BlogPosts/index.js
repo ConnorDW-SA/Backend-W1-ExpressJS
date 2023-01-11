@@ -31,7 +31,7 @@ blogsRouter.get("/", (req, res) => {
 
 blogsRouter.get("/:id", (req, res) => {
   const blogId = req.params.id;
-  console.log("BLOG ID:", blogId);
+
   const blogs = JSON.parse(fs.readFileSync(blogsJSONPath));
   const blog = blogs.find((blog) => blog.id === blogId);
   res.send(blog);
@@ -80,21 +80,29 @@ blogsRouter.delete("/:id", (req, res) => {
 
 //Get all posts from a single author --------------
 
-blogsRouter.get("/", (req, res) => {
+blogsRouter.get("/author/:authorName", (req, res) => {
   const blogs = JSON.parse(fs.readFileSync(blogsJSONPath));
-  const authorName = req.query.author;
-  const blog = blogs.filter((blog) => blog.author.name === authorName);
-  if (blog.length > 0) {
+  const blog = blogs.filter((blog) => blog.author === req.params.authorName);
+  if (blog) {
     res.send(blog);
   } else {
-    res.send("No blog found!");
+    res.status(404).send("Author not found");
   }
 });
 
 //Get a post that contains a specific word --------------
 
-// blogsRouter.get("/:id/posts/:word", (req, res) => {
-//   const blogs = JSON.parse(fs.readFileSync(blogsJSONPath));
-//   const blog = blogs.filter((blog) => blog.id === req.params.id);
+blogsRouter.get("/search/:word", (req, res) => {
+  const blogs = JSON.parse(fs.readFileSync(blogsJSONPath));
+  const searchWord = req.params.word.toLowerCase();
+  const blog = blogs.filter((blog) =>
+    blog.title.toLowerCase().includes(searchWord)
+  );
+  if (blog) {
+    res.send(blog);
+  } else {
+    res.status(404).send("Not found");
+  }
+});
 
 export default blogsRouter;

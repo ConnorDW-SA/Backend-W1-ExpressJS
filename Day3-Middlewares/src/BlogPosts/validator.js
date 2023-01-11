@@ -8,10 +8,10 @@ const blogPostSchema = {
       errorMessage: "title is a required field"
     }
   },
-  author: {
+  category: {
     in: ["body"],
     exists: {
-      errorMessage: "author is a required field"
+      errorMessage: "categiry is a required field"
     }
   }
 };
