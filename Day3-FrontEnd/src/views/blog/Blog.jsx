@@ -8,6 +8,8 @@ import "./styles.css";
 const Blog = (props) => {
   const [blog, setBlog] = useState({});
   const [loading, setLoading] = useState(true);
+  const [authorSearch, setAuthorSearch] = useState("");
+  const [titleSearch, setTitleSearch] = useState("");
   const params = useParams();
   const navigate = useNavigate();
 
@@ -30,6 +32,28 @@ const Blog = (props) => {
         navigate("/404");
       });
   }, [params, navigate]);
+
+  useEffect(() => {
+    setLoading(true);
+
+    fetch(
+      `http://localhost:3001/blogPosts?author=${authorSearch}&title=${titleSearch}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data) {
+          setAuthorSearch(data);
+          setTitleSearch(data);
+          setLoading(false);
+        } else {
+          navigate("/404");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        navigate("/404");
+      });
+  }, [authorSearch, titleSearch, navigate, setLoading, setBlog]);
 
   if (loading) {
     return <div>Loading...</div>;

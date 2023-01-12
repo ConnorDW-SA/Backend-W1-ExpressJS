@@ -1,8 +1,18 @@
-import React from "react";
-import { Button, Container, Navbar } from "react-bootstrap";
+import React, { useState } from "react";
+import { Button, Container, Navbar, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./styles.css";
+
 const NavBar = (props) => {
+  const [authorSearch, setAuthorSearch] = useState("");
+  const [titleSearch, setTitleSearch] = useState("");
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setAuthorSearch(event.target.elements.authorSearch.value);
+    setTitleSearch(event.target.elements.titleSearch.value);
+  };
+
   return (
     <Navbar expand="lg" className="blog-navbar" fixed="top">
       <Container className="justify-content-between">
@@ -28,6 +38,32 @@ const NavBar = (props) => {
           </svg>
           Post Article
         </Button>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group controlId="formBasicEmail">
+            <Form.Label>Search for author</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter name"
+              name="authorSearch"
+              value={authorSearch}
+              onChange={(event) => setAuthorSearch(event.target.value)}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formBasicPassword">
+            <Form.Label>Search for Title</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter Title"
+              name="titleSearch"
+              value={titleSearch}
+              onChange={(event) => setTitleSearch(event.target.value)}
+            />
+          </Form.Group>
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+        </Form>
       </Container>
     </Navbar>
   );
