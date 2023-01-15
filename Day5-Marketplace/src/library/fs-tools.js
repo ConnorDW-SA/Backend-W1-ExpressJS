@@ -1,4 +1,4 @@
-const { fileUrlToPath } = require("url");
+import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import fs from "fs-extra";
 
@@ -6,8 +6,8 @@ const { readJSON, writeJSON, writeFile } = fs;
 
 const dataFolderPath = join(process.cwd(), "./public/images/products");
 
-const productsFilePath = joim(
-  dirname(fileUrlToPath(import.meta.url)),
+const productsFilePath = join(
+  dirname(fileURLToPath(import.meta.url)),
   "../data/products.json"
 );
 

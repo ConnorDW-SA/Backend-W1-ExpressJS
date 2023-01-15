@@ -4,8 +4,7 @@ import { extname } from "path";
 import {
   savePictures,
   getProducts,
-  writeProducts,
-  savePictures
+  writeProducts
 } from "../../library/fs-tools.js";
 
 const filesRouter = express.Router();

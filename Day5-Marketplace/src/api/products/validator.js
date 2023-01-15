@@ -64,8 +64,8 @@ export const validate = (req, res, next) => {
   if (!errors.isEmpty()) {
     next(
       createError(400, {
-        errorsList: errors.array(),
-        message: "Validation Error"
+        message: "Validation Error",
+        errorsList: errors.array()
       })
     );
   } else {

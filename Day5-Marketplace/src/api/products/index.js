@@ -3,6 +3,7 @@ import { getProducts, writeProducts } from "../../library/fs-tools.js";
 import httpErrors from "http-errors";
 import { validateProduct, validateReview, validate } from "./validator.js";
 const { notFound, badRequest, Unauthorized } = httpErrors;
+import uniqid from "uniqid";
 
 const productsRouter = express.Router();
 
@@ -31,8 +32,13 @@ productsRouter.get("/:id", async (req, res, next) => {
 
 productsRouter.post("/", validateProduct, validate, async (req, res, next) => {
   try {
+    const newProduct = {
+      ...req.body,
+      _id: uniqid(),
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
     const products = await getProducts();
-    const newProduct = { ...req.body, _id: uniqid(), createdAt: new Date() };
     products.push(newProduct);
     await writeProducts(products);
     res.status(201).send({ _id: newProduct._id });
