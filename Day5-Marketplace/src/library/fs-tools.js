@@ -1,4 +1,4 @@
-import { fileUrlToPath } from "url";
+const { fileUrlToPath } = require("url");
 import { dirname, join } from "path";
 import fs from "fs-extra";
 
@@ -11,7 +11,9 @@ const productsFilePath = joim(
   "../data/products.json"
 );
 
-export const getProducts = async () => await readJSON(productsFilePath);
+console.log(productsFilePath);
+
+export const getProducts = () => readJSON(productsFilePath);
 export const writeProducts = (products) =>
   writeJSON(productsFilePath, products);
 export const savePictures = (fileName, contentAsBuffer) =>

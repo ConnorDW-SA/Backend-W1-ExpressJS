@@ -2,10 +2,11 @@ import express from "express";
 import multer from "multer";
 import { extname } from "path";
 import {
-  savePicture,
+  savePictures,
   getProducts,
-  writeProducts
-} from "../library/fs-tools.js";
+  writeProducts,
+  savePictures
+} from "../../library/fs-tools.js";
 
 const filesRouter = express.Router();
 
@@ -17,7 +18,7 @@ filesRouter.post(
       const originalName = extname(req.file.originalname);
       const fileName = req.params.id + originalName;
 
-      await savePicture(fileName, req.file.buffer);
+      await savePictures(fileName, req.file.buffer);
 
       const url = `http://localhost:3001/images/products/${fileName}`;
 
@@ -42,3 +43,4 @@ filesRouter.post(
 );
 
 export default filesRouter;
+//
